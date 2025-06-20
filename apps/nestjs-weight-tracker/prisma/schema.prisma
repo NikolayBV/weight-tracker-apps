@@ -1,0 +1,36 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Gender {
+  Man
+  Woman
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  password     String
+  birthdayDate DateTime
+  height       Int
+  gender       Gender
+  createdAt    DateTime @default(now())
+
+  weights Weight[]
+}
+
+model Weight {
+  id        String   @id @default(uuid())
+  userId    String
+  date      DateTime
+  weight    Float
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
