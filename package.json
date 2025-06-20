@@ -1,0 +1,16 @@
+{
+  "name": "weight-tracker-monorepo",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
+  "version": "1.0.0",
+  "scripts": {
+    "dev:frontend": "pnpm --filter next-weight-tracker dev",
+    "dev:backend": "pnpm --filter nestjs-weight-tracker start:dev",
+    "deploy": "docker compose down && docker compose build --no-cache && docker compose up -d",
+    "build": "pnpm -r build",
+    "start": "pnpm -r start"
+  },
+  "devDependencies": {}
+}

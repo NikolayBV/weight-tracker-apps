@@ -1,0 +1,36 @@
+# 📦 Node
+node_modules
+**/node_modules
+
+# 🔐 Env files
+.env
+.env.*
+!.env.example
+
+# 🗑️ OS junk
+.DS_Store
+Thumbs.db
+
+# 👨‍💻 IDE
+.idea
+.vscode
+
+# 🔍 Logs
+*.log
+
+# 📁 Build artifacts
+dist
+.next
+coverage
+build
+
+# 🐳 Docker & Compose override
+docker-compose.override.yml
+Dockerfile.local
+
+# 🔧 Package locks (если они не нужны внутри образа)
+**/package-lock.json
+**/yarn.lock
+
+# ⚠️ Prisma artifacts (если не хочешь собирать заново в образе)
+.prisma

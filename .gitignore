@@ -1,0 +1,48 @@
+# ⚙️ Node.js
+node_modules/
+dist/
+.next/
+out/
+
+# 🧪 Logs
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+*.log
+
+# 📦 Dependency locks (если monorepo — только корневой lock нужен)
+apps/**/yarn.lock
+apps/**/package-lock.json
+
+# ⚠️ Env files
+.env
+.env.*
+!.env.example
+
+# 💾 Prisma SQLite (если используется)
+*.db
+*.sqlite
+*.sqlite3
+
+# 🧪 Prisma generated folders (generated client is ok if committed intentionally)
+.prisma/
+!.prisma/client/
+
+# 📁 IDE/Editor settings
+.idea/
+.vscode/
+
+# 🐳 Docker
+**/.docker/
+**/Dockerfile.local
+docker-compose.override.yml
+
+# 🧱 Build artifacts
+build/
+coverage/
+*.tgz
+*.tar.gz
+
+# 📁 MacOS/Windows system files
+.DS_Store
+Thumbs.db
