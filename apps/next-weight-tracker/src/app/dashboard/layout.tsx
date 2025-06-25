@@ -1,15 +1,5 @@
-'use client';
+import AuthGate from "@/components/layouts/auth-gate/AuthGate";
 
-
-interface Props {
-    children: React.ReactNode;
-}
-
-export default function ProtectedLayout({ children }: Props) {
-
-    return (
-        <>
-            {children}
-        </>
-    );
+export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+    return <AuthGate>{children}</AuthGate>;
 }

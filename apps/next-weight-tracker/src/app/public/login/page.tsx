@@ -23,10 +23,11 @@ export default function LoginPage() {
             return;
         }
         const response = await apiInstance.login({email, password});
+   
         if(response && response.token){
             setToken(response.token);
             setUserData(response.user)
-            router.push('/dashboard');
+            router.push('/dashboard/main');
         }
     };
 

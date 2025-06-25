@@ -1,0 +1,6 @@
+.headerContainer {
+    display: flex;
+    justify-content: space-between; /* или center / flex-start */
+    align-items: center; /* выравнивает по вертикали */
+    padding: 1rem;
+}

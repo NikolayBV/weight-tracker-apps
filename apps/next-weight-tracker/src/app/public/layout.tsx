@@ -5,7 +5,6 @@ import {redirect} from "next/navigation";
 import {useAuth} from "@/utils/hooks/useAuth";
 
 export default function PublicLayout({ children }: { children: React.ReactNode }) {
-    useAuth();
     function onClickLoginBtn(): void {
         redirect("/public/login");
     }
