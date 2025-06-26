@@ -55,12 +55,12 @@ export default function DashboardTab() {
                     <Button type={'submit'}>Добавить</Button>
                 </Form>
             </Modal>
-
-            <Button className={styles.tab__button} variant="filled" onClick={open}>
-                Добавить вес
-            </Button>
+            
             <BmiCard />
             <WeightChart />
+            <Button className={styles.tab__button} variant="default" onClick={open}>
+                Добавить вес
+            </Button>
         </section>
     );
 } 

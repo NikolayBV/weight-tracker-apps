@@ -1,18 +1,29 @@
 'use client';
 
-import {useAuth} from "@/utils/hooks/useAuth";
-import ProtectedLayout from "@/components/layouts/protected-layout/ProtectedLayout";
-import PublicLayout from "@/components/layouts/public-layout/PublicLayout";
+import { useAuth } from "@/utils/hooks/useAuth";
+import Loader from "@/components/ui/loader/Loader";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 interface Props {
     children: React.ReactNode;
 }
 
 export default function MainLayout({ children }: Props) {
-    const {auth} = useAuth();
-    const Layout = auth ? ProtectedLayout : PublicLayout;
+    const { auth, loading } = useAuth();
+    const router = useRouter();
 
-    return (
-        <Layout>{children}</Layout>
-    );
+    useEffect(() => {
+        if (!loading) {
+            if (auth) {
+                router.replace('/dashboard/main');
+            } else {
+                router.replace('/public/login');
+            }
+        }
+    }, [auth, loading, router]);
+    
+    if (loading) return <Loader />;
+    
+    return <>{children}</>;
 }

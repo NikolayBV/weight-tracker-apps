@@ -6,6 +6,7 @@ import {MantineProvider} from "@mantine/core";
 import {Notifications} from "@mantine/notifications";
 import Header from "@/components/ui/header/Header";
 import Footer from "@/components/ui/footer/Footer";
+import MainLayout from "@/components/layouts/main-layout/MainLayout";
 
 export default function RootLayout({
   children,

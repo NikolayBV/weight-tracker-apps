@@ -2,7 +2,6 @@
 import "./layout.css";
 import MyButton from "@/components/ui/my-button/MyButton";
 import {redirect} from "next/navigation";
-import {useAuth} from "@/utils/hooks/useAuth";
 
 export default function PublicLayout({ children }: { children: React.ReactNode }) {
     function onClickLoginBtn(): void {
@@ -13,9 +12,7 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
     }
     return (
         <>
-            <section>
-                {children}
-            </section>
+            {children}
             <nav className="nav">
                 <MyButton onClick={onClickLoginBtn} buttonTitle={"Вход"}></MyButton>
                 <MyButton onClick={onClickRegisterBtn} buttonTitle={"Регистрация"}></MyButton>
