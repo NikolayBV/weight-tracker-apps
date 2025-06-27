@@ -1,4 +1,4 @@
-/*import {useUserStore} from "@/stores/userStore";
+import {useUserStore} from "@/stores/userStore";
 import {useWeightStore} from "@/stores/weightStore";
 import {useEffect} from "react";
 import {apiInstance} from "@/api/api";
@@ -11,7 +11,7 @@ export function useLoadWeights() {
         if (!userId) return;
         const fetch = async () => {
             try {
-                const weights = await apiInstance.getWeight(userId);
+                const weights = await apiInstance.getWeight({userId, sortBy: 'date', sortOrder: 'asc'});
                 setUserWeight(weights.entries);
             } catch (e) {
                 console.error("Ошибка при загрузке весов", e);
@@ -19,4 +19,4 @@ export function useLoadWeights() {
         };
         fetch();
     }, [userId]);
-}*/
+}

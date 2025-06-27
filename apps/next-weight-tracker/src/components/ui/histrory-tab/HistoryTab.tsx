@@ -1,14 +1,18 @@
 "use client";
 import { ScrollArea, Table, Text, Box } from "@mantine/core";
 import { IconArrowsUpDown } from "@tabler/icons-react";
-import { useWeightStore } from "@/stores/weightStore";
-import { useSortedWeights } from "@/utils/hooks/useSortedWeights";
 import styles from "./history-tab.module.css";
+import {Weight} from "@/utils/interfaces";
+import React from "react";
 
-export default function HistoryTab() {
-    const weights = useWeightStore((state) => state.userWeight);
-    const { sortBy, sortOrder, handleSort } = useSortedWeights();
+interface HistoryTabProps {
+    weights: Weight[];
+    sortBy: "weight" | "date";
+    sortOrder: "asc" | "desc";
+    handleSort: (key: "weight" | "date") => void;
+}
 
+function HistoryTab({weights, sortBy, sortOrder, handleSort}: HistoryTabProps) {
     const renderIcon = (key: "weight" | "date") => {
         if (sortBy !== key) return <IconArrowsUpDown size="0.9rem" stroke={1.5} />;
         return sortOrder === "asc" ? <span>▲</span> : <span>▼</span>;
@@ -53,3 +57,5 @@ export default function HistoryTab() {
         </div>
     );
 }
+
+export default React.memo(HistoryTab);

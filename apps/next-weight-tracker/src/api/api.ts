@@ -1,6 +1,6 @@
 import api from "@/lib/axios";
 import axios, {AxiosError, AxiosInstance} from "axios";
-import {AddWeighData, LoginData, RegisterData, Weight} from "@/utils/interfaces";
+import {AddWeighData, LoginData, RegisterData, UpdateUserData, Weight} from "@/utils/interfaces";
 import {notifications} from "@mantine/notifications";
 
 class Api {
@@ -41,6 +41,21 @@ class Api {
                 console.error('Axios ошибка регистрации:', error.response?.data);
             } else {
                 console.error('Неизвестная ошибка регистрации:', error);
+            }
+
+            throw error;
+        }
+    }
+
+    async updateUser({email, password, birthdayDate, height, gender, userId}: UpdateUserData) {
+        try {
+            const response = await this.api.post('auth/update', { email, password, birthdayDate, height, gender, userId });
+            return response.data;
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                console.error('Axios ошибка изменения:', error.response?.data);
+            } else {
+                console.error('Неизвестная ошибка изменения:', error);
             }
 
             throw error;

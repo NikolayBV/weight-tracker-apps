@@ -1,3 +1,9 @@
 .tab {
     padding: 1rem 0 1rem 0;
 }
+
+.tab__buttons {
+    display: flex;
+    justify-content: center;
+    gap: 5rem;
+}
