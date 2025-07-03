@@ -45,7 +45,7 @@ export default function DashboardTab() {
     };
 
     return (
-        <section className={styles.tab}>
+        <div className={styles.tab}>
             <Modal opened={opened} onClose={close} centered>
                 <Form title="Добавление веса" onSubmit={(e) => handleSubmit(e)}>
                     <MyInput inputTitle={"Вес"} value={weight} type={"number"}
@@ -61,6 +61,6 @@ export default function DashboardTab() {
             <Button className={styles.tab__button} variant="default" onClick={open}>
                 Добавить вес
             </Button>
-        </section>
+        </div>
     );
 } 

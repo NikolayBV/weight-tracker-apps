@@ -1,4 +1,4 @@
-import { ForbiddenException, HttpStatus, Injectable } from '@nestjs/common';
+import { ForbiddenException, HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from '../prisma/prisma.service';
 import { Request, Response } from 'express';
@@ -63,31 +63,31 @@ export class AuthService {
   }
 
   async refreshToken(req: Request, res: Response) {
-    const token = (req.cookies as { refresh_token?: string })?.refresh_token;
+    const token = req.cookies?.refresh_token as string;
 
     if (!token) {
-      throw new ForbiddenException('Нет refresh токена');
+      res.clearCookie('refresh_token');
+      throw new UnauthorizedException('Refresh token not provided');
     }
     let payload: { sub: string; email: string };
     try {
       payload = this.jwtService.verify(token, {
         secret: process.env.JWT_REFRESH_SECRET,
       });
+
+      const tokens = await this.getTokens(payload.sub, payload.email);
+
+      res.cookie('refresh_token', tokens.refreshToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+      });
+
+      return { accessToken: tokens.accessToken };
     } catch (e) {
-      throw new ForbiddenException(`Неверный refresh токен ${e}`);
+      res.clearCookie('refresh_token');
+      throw new UnauthorizedException('Invalid or expired refresh token');
     }
-
-    const tokens = await this.getTokens(payload.sub, payload.email);
-
-    res.cookie('refresh_token', tokens.refreshToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 дней
-    });
-
-    return {
-      accessToken: tokens.accessToken,
-    };
   }
 }

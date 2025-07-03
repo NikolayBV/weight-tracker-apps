@@ -3,6 +3,7 @@
     flex-direction: column;
     gap: 20px;
     align-items: center;
+    padding: 5rem 0;
 }
 .tab__button {
     width: 20%;

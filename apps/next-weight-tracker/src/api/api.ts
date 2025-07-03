@@ -1,6 +1,6 @@
 import api from "@/lib/axios";
 import axios, {AxiosError, AxiosInstance} from "axios";
-import {AddWeighData, LoginData, RegisterData, UpdateUserData, Weight} from "@/utils/interfaces";
+import {AddWeighData, LoginData, RegisterData, UpdateUserData, User, Weight} from "@/utils/interfaces";
 import {notifications} from "@mantine/notifications";
 
 class Api {
@@ -47,9 +47,15 @@ class Api {
         }
     }
 
-    async updateUser({email, password, birthdayDate, height, gender, userId}: UpdateUserData) {
+    async updateUser({ userId, ...data }: UpdateUserData): Promise<User> {
         try {
-            const response = await this.api.post('auth/update', { email, password, birthdayDate, height, gender, userId });
+            const response = await this.api.patch(`users/${userId}`, data);
+            if (response.status === 200) {
+                notifications.show({
+                    title: 'Success',
+                    message: 'User updated successfully',
+                });
+            }
             return response.data;
         } catch (error) {
             if (axios.isAxiosError(error)) {
@@ -57,7 +63,6 @@ class Api {
             } else {
                 console.error('Неизвестная ошибка изменения:', error);
             }
-
             throw error;
         }
     }

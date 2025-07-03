@@ -1,9 +1,18 @@
-import { Body, Controller, HttpStatus, Post, Req, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpStatus,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Request, Response } from 'express';
 import { UsersService } from '../users/users.service';
 import { CreateUserDto } from '../users/dto/create-user.dto';
 import { LoginDto } from '../dto/login.dto';
+import { RefreshTokenGuard } from './RefreshTokenGuard';
 
 @Controller('auth')
 export class AuthController {
@@ -12,6 +21,7 @@ export class AuthController {
     private readonly usersService: UsersService,
   ) {}
 
+  @UseGuards(RefreshTokenGuard)
   @Post('/refresh')
   refreshToken(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
     return this.authService.refreshToken(req, res);

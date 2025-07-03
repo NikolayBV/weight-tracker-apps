@@ -1,4 +1,8 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from '../prisma/prisma.service';
@@ -18,8 +22,30 @@ export class UsersService {
     });
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: string, dto: UpdateUserDto) {
+    try {
+      const { email, password, birthdayDate, height, gender } = dto;
+
+      const data: Record<string, any> = {};
+
+      if (email) data.email = email;
+      if (password && password.trim() !== '') {
+        data.password = await hash(password, 10);
+      }
+      if (birthdayDate) data.birthdayDate = new Date(birthdayDate);
+      if (height !== undefined && !isNaN(Number(height))) {
+        data.height = Number(height);
+      }
+      if (gender) data.gender = gender;
+
+      return await this.prisma.user.update({
+        where: { id },
+        data,
+      });
+    } catch (error) {
+      console.error('Ошибка обновления пользователя:', error);
+      throw new NotFoundException(`Пользователь с ID ${id} не найден`);
+    }
   }
 
   remove(id: number) {
