@@ -41,6 +41,14 @@ export class UsersService {
       return await this.prisma.user.update({
         where: { id },
         data,
+        select: {
+          id: true,
+          email: true,
+          birthdayDate: true,
+          createdAt: true,
+          height: true,
+          gender: true,
+        },
       });
     } catch (error) {
       console.error('Ошибка обновления пользователя:', error);
@@ -48,8 +56,15 @@ export class UsersService {
     }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(id: string) {
+    try {
+      return await this.prisma.user.delete({
+        where: { id },
+      });
+    } catch (error) {
+      console.error('Ошибка удаления пользователя:', error);
+      throw new NotFoundException(`Пользователь с ID ${id} не найден`);
+    }
   }
 
   async registerUser(dto: CreateUserDto) {

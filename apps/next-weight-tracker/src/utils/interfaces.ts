@@ -9,7 +9,7 @@ export interface RegisterData {
 }
 
 export interface UpdateUserData extends RegisterData {
-    userId: string;
+    id: string;
 }
 
 export interface AddWeighData {
@@ -32,9 +32,10 @@ export interface Weight {
 }
 
 export interface User {
-    userId: string | undefined;
-    userBirthday: string;
-    userHeight: number;
-    userGender: string;
-    userEmail: string;
+    id: string | undefined;
+    birthdayDate: string;
+    height: number;
+    gender: string;
+    email: string;
+    createdAt?: string;
 }

@@ -4,6 +4,8 @@ import { useAuth } from "@/utils/hooks/useAuth";
 import Loader from "@/components/ui/loader/Loader";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import ProtectedLayout from "@/components/layouts/protected-layout/ProtectedLayout";
+import PublicLayout from "@/components/layouts/public-layout/PublicLayout";
 
 interface Props {
     children: React.ReactNode;
@@ -25,5 +27,10 @@ export default function MainLayout({ children }: Props) {
     
     if (loading) return <Loader />;
     
-    return <>{children}</>;
+    return (
+        <main>
+            {auth && <ProtectedLayout>{children}</ProtectedLayout>}
+            {!auth && <PublicLayout>{children}</PublicLayout>}
+        </main>
+    );
 }

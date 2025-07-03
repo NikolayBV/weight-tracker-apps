@@ -7,13 +7,28 @@ import MyButton from "@/components/ui/my-button/MyButton";
 import Loader from "@/components/ui/loader/Loader";
 import {UpdateUserData, User} from "@/utils/interfaces";
 import {apiInstance} from "@/api/api";
+import {useUserStore} from "@/stores/userStore";
 
 export default function ProfileTab({user}: {user: User}) {  
     const handleLogout = useLogout();
+    const updateUser = useUserStore(state => state.setUserData);
+    const logout = useLogout();
+    
     const handleEditUser = useCallback(async (data: UpdateUserData) => {
-        await apiInstance.updateUser(data);
-    }, [user.userId]);
-    const handeDelete = useCallback(() => {}, []);
+        const user = await apiInstance.updateUser(data);
+        if(user) {
+            updateUser(user);
+        }
+    }, [user.id]);
+    
+    const handeDelete = useCallback(async () => {
+        if(user.id) {
+            const res = await apiInstance.deleteUser(user.id);
+            if(res) {
+                await logout();
+            }
+        }
+    }, [user.id]);
 
     if(!user) {
         return <Loader />

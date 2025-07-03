@@ -16,7 +16,7 @@ export default function DashboardTab() {
     const [opened, { open, close }] = useDisclosure(false);
     const [weight, setWeight] = useState("");
     const [date, setDate] = useState("");
-    const userId = useUserStore(state => state.userId);
+    const userId = useUserStore(state => state.id);
     const setUserWeight = useWeightStore(state => state.setUserWeight);
     
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {

@@ -9,7 +9,6 @@ import {useLoadWeights} from "@/utils/hooks/useLoadWeights";
 export default function AuthGate({ children }: { children: React.ReactNode }) {
     const { auth, loading } = useAuth();
     const router = useRouter();
-    useLoadWeights();
 
     useEffect(() => {
         if (!loading && !auth) {

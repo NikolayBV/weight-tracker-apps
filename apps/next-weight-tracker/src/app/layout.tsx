@@ -26,9 +26,9 @@ export default function RootLayout({
       <Notifications />
       <Header title={"Weight tracker"} />
 
-      <main>
+      <MainLayout>
         {children}
-      </main>
+      </MainLayout>
 
       <Footer />
     </MantineProvider>

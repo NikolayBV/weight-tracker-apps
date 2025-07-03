@@ -11,40 +11,40 @@ interface UserCardProps {
 }
 
     export default function UserCard({ user, handleEdit }: UserCardProps) {
-    const { userEmail, userGender, userHeight, userBirthday, userId } = user;
+    const { id, gender, height, email, birthdayDate } = user;
     const formattedBirthday = useMemo(() => {
-        return userBirthday ? new Date(userBirthday).toISOString().split('T')[0] : '';
-    }, [userBirthday]);
+        return birthdayDate ? new Date(birthdayDate).toISOString().split('T')[0] : '';
+    }, [birthdayDate]);
 
-    const [email, setEmail] = useState(userEmail);
+    const [userEmail, setEmail] = useState(email);
     const [password, setPassword] = useState('');
-    const [birthdayDate, setBirthdayDate] = useState(formattedBirthday);
-    const [height, setHeight] = useState(userHeight);
-    const [gender, setGender] = useState<Gender | "">(userGender as Gender);
+    const [userBirthdayDate, setBirthdayDate] = useState(formattedBirthday);
+    const [userHeight, setHeight] = useState(height);
+    const [userGender, setGender] = useState<Gender | "">(gender as Gender);
 
         const isChanged =
-            email !== (userEmail ?? "") ||
+            email !== (email ?? "") ||
             password !== "" ||
             birthdayDate !== formattedBirthday ||
-            height !== Number(userHeight ?? "") ||
-            gender !== (userGender ?? "");
+            height !== Number(height ?? "") ||
+            gender !== (gender ?? "");
     
     useEffect(() => {
-        setGender(userGender as Gender);
-        setHeight(Number(userHeight));
+        setGender(gender as Gender);
+        setHeight(Number(height));
         setBirthdayDate(formattedBirthday);
-        setEmail(userEmail);
-    }, [userEmail])
+        setEmail(email);
+    }, [email])
 
     return (
         <Form title={"Информация о пользователе"} onSubmit={(e) => {
             e.preventDefault();
-            if(isChanged && userId) {
-                handleEdit({email, password, birthdayDate, userId, height: String(height), gender});
+            if(isChanged && id) {
+                handleEdit({email: userEmail, password, birthdayDate: userBirthdayDate, id, height: String(userHeight), gender: userGender});
             }
         }}>
             <MyInput inputTitle={'Email'}
-                     value={email}
+                     value={userEmail}
                      onChange={e => setEmail(e.target.value)}
                      type={"email"}
             />
@@ -54,12 +54,12 @@ interface UserCardProps {
                      type={"password"}
             />
             <MyInput inputTitle={'Дата рождения'}
-                     value={birthdayDate}
+                     value={userBirthdayDate}
                      onChange={e => setBirthdayDate(e.target.value)}
                      type={"date"}
             />
             <MyInput inputTitle={'Рост'}
-                     value={String(height)}
+                     value={String(userHeight)}
                      onChange={e => setHeight(+e.target.value)}
                      type={"text"}
             />

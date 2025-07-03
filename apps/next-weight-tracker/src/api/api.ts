@@ -47,9 +47,9 @@ class Api {
         }
     }
 
-    async updateUser({ userId, ...data }: UpdateUserData): Promise<User> {
+    async updateUser({ id, ...data }: UpdateUserData): Promise<User> {
         try {
-            const response = await this.api.patch(`users/${userId}`, data);
+            const response = await this.api.patch(`users/${id}`, data);
             if (response.status === 200) {
                 notifications.show({
                     title: 'Success',
@@ -73,6 +73,26 @@ class Api {
             return response.data;
         } catch (error) {
             console.error('Ошибка получения пользователя:', error);
+            throw error;
+        }
+    }
+    
+    async deleteUser(userId: string) {
+        try {
+            const response = await this.api.delete(`users/${userId}`);
+            if (response.status === 200) {
+                notifications.show({
+                    title: 'Success',
+                    message: 'User deleted successfully',
+                });
+            }
+            return response.data;
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                console.error('Axios ошибка удаления:', error.response?.data);
+            } else {
+                console.error('Неизвестная ошибка удаления:', error);
+            }
             throw error;
         }
     }

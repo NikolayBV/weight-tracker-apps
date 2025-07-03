@@ -6,7 +6,7 @@ import { useWeightStore } from '@/stores/weightStore';
 export const useSortedWeights = () => {
     const [sortBy, setSortBy] = useState<'date' | 'weight'>('date');
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
-    const userId = useUserStore((state) => state.userId);
+    const userId = useUserStore((state) => state.id);
     const setUserWeight = useWeightStore((state) => state.setUserWeight);
 
     const fetchWeights = async () => {

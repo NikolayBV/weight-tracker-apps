@@ -5,8 +5,7 @@ interface Props {
 }
 
 export default function PublicLayout({ children }: Props) {
-
-    console.log('public layout');
+    
     return (
         <>
             {children}

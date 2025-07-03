@@ -8,7 +8,7 @@ import { useAuthStore } from '@/stores/authStore';
 
 export const useAuth = () => {
     const router = useRouter();
-    const userId = useUserStore((s) => s.userId);
+    const userId = useUserStore((s) => s.id);
     const setUserId = useUserStore((s) => s.setUserId);
     const setUserData = useUserStore((s) => s.setUserData);
     const setAccessToken = useAuthStore((s) => s.setAccessToken);

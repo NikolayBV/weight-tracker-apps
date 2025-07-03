@@ -3,19 +3,13 @@ import { devtools } from "zustand/middleware";
 import { User } from "@/utils/interfaces";
 
 interface UserState {
-    userId: string | null;
-    userEmail: string | null;
-    userBirthday: string | null;
-    userGender: string | null;
-    userHeight: number | null;
+    id: string | null;
+    email: string | null;
+    birthdayDate: string | null;
+    gender: string | null;
+    height: number | null;
     setUserId: (id: string) => void;
-    setUserData: (data: {
-        id: string | null;
-        email: string | null;
-        birthdayDate: string | null;
-        gender: string | null;
-        height: number | null;
-    }) => void;
+    setUserData: (data: User) => void;
     getUserData: () => User;
     clear: () => void;
 }
@@ -23,35 +17,35 @@ interface UserState {
 export const useUserStore = create<UserState>()(
     devtools(
         (set, get) => ({
-            userId: null,
-            userEmail: null,
-            userBirthday: null,
-            userGender: null,
-            userHeight: null,
+            id: null,
+            email: null,
+            birthdayDate: null,
+            gender: null,
+            height: null,
 
-            setUserId: (id) => set({ userId: id }),
+            setUserId: (id) => set({ id: id }),
 
             setUserData: (data) =>
                 set({
-                    userId: data.id,
-                    userEmail: data.email,
-                    userBirthday: data.birthdayDate,
-                    userGender: data.gender,
-                    userHeight: data.height,
+                    id: data.id,
+                    email: data.email,
+                    birthdayDate: data.birthdayDate,
+                    gender: data.gender,
+                    height: data.height,
                 }),
 
             getUserData: () => {
-                const { userId, userEmail, userBirthday, userGender, userHeight } = get();
-                return { userId, userEmail, userBirthday, userGender, userHeight };
+                const { id, height, gender, email } = get();
+                return { id, height, gender, email };
             },
 
             clear: () =>
                 set({
-                    userId: null,
-                    userEmail: null,
-                    userBirthday: null,
-                    userGender: null,
-                    userHeight: null,
+                    id: null,
+                    email: null,
+                    birthdayDate: null,
+                    gender: null,
+                    height: null,
                 }),
         }),
         { name: "UserStore" }

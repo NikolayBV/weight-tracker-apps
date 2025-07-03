@@ -4,7 +4,7 @@ import {useEffect} from "react";
 import {apiInstance} from "@/api/api";
 
 export function useLoadWeights() {
-    const userId = useUserStore((state) => state.userId);
+    const userId = useUserStore((state) => state.id);
     const setUserWeight = useWeightStore((state) => state.setUserWeight);
 
     useEffect(() => {
