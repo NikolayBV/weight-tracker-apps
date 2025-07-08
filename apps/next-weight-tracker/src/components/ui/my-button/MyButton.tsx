@@ -3,7 +3,7 @@ import { Button } from '@mantine/core';
 
 interface ButtonProps {
     buttonTitle: string;
-    onClick?: (...args: any) => void;
+    onClick?: (...args: unknown[]) => void;
     size?: string;
     type?: "button" | "submit" | "reset" | undefined;
     variant?: string;

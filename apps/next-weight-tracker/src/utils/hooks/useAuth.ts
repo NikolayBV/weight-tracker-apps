@@ -45,7 +45,8 @@ export const useAuth = () => {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const user = await apiInstance.getUser(userId!!);
+                if (!userId) return;
+                const user = await apiInstance.getUser(userId);
                 setUserData(user);
             } catch (err) {
                 console.log(err);

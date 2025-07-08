@@ -6,7 +6,7 @@ import { useMemo, useCallback } from 'react';
 import styles from "./bmi-card.module.css"
 
 export default function BmiCard() {
-    const userHeight = useUserStore(state => state.userHeight);
+    const userHeight = useUserStore(state => state.height);
     const weights = useWeightStore(state => state.userWeight);
 
     const lastWeight = useMemo(() => weights[weights.length - 1]?.weight, [weights]);
