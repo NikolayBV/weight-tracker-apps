@@ -31,7 +31,7 @@ export default function Register() {
         if(response && response.token){
             setToken(response.token);
             setUserId(response.user.id);
-            router.push('/dashboard');
+            router.push('/dashboard/main');
         }
     }
     

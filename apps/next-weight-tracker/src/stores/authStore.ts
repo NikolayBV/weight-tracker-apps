@@ -12,7 +12,12 @@ export const useAuthStore = create<AuthState>()(
         (set) => ({
             accessToken: null,
             setAccessToken: (token) => set({ accessToken: token }),
-            clear: () => set({ accessToken: null }),
+            clear: () => {
+                set({ accessToken: null });
+                if (typeof window !== "undefined") {
+                    window.location.href = "/public/login";
+                }
+            },
         }),
         { name: "AuthStore" }
     )
