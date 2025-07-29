@@ -5,6 +5,7 @@ import {notifications} from "@mantine/notifications";
 
 class Api {
     private api: AxiosInstance;
+    
     constructor() {
         this.api = api;
     }
@@ -36,10 +37,18 @@ class Api {
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 if (error.response?.status === 409) {
+                    notifications.show({
+                        title: 'Error',
+                        message: 'Такой email уже зарегистрирован!',
+                    });
                     console.log('Такой email уже зарегистрирован!');
                 }
                 console.error('Axios ошибка регистрации:', error.response?.data);
             } else {
+                notifications.show({
+                    title: 'Error',
+                    message: 'Неизвестная ошибка регистрации!',
+                });
                 console.error('Неизвестная ошибка регистрации:', error);
             }
 
@@ -59,8 +68,16 @@ class Api {
             return response.data;
         } catch (error) {
             if (axios.isAxiosError(error)) {
+                notifications.show({
+                    title: 'Error',
+                    message: 'Axios ошибка изменения!',
+                });
                 console.error('Axios ошибка изменения:', error.response?.data);
             } else {
+                notifications.show({
+                    title: 'Error',
+                    message: 'Неизвестная ошибка изменения!',
+                });
                 console.error('Неизвестная ошибка изменения:', error);
             }
             throw error;
@@ -72,6 +89,10 @@ class Api {
             const response = await this.api.get(`users/${userId}`);
             return response.data;
         } catch (error) {
+            notifications.show({
+                title: 'Error',
+                message: 'Ошибка получения пользователя!',
+            });
             console.error('Ошибка получения пользователя:', error);
             throw error;
         }
@@ -89,8 +110,16 @@ class Api {
             return response.data;
         } catch (error) {
             if (axios.isAxiosError(error)) {
+                notifications.show({
+                    title: 'Error',
+                    message: 'Axios ошибка удаления пользователя!',
+                });
                 console.error('Axios ошибка удаления:', error.response?.data);
             } else {
+                notifications.show({
+                    title: 'Error',
+                    message: 'Неизвестная ошибка удаления!',
+                });
                 console.error('Неизвестная ошибка удаления:', error);
             }
             throw error;
@@ -102,7 +131,11 @@ class Api {
             const response = await this.api.post('/auth/refresh');
             return response.data;
         } catch (error) {
-            console.info('Ошибка получения пользователя:', error);
+            notifications.show({
+                title: 'Error',
+                message: 'Неизвестная ошибка!',
+            });
+            console.error('Ошибка получения рефреш токена:', error);
             throw error;
         }
     }
@@ -112,6 +145,10 @@ class Api {
             const response = await this.api.post('/auth/logout');
             return response.data;
         } catch (error) {
+            notifications.show({
+                title: 'Error',
+                message: 'Ошибка получения пользователя!',
+            });
             console.error('Ошибка получения пользователя:', error);
             throw error;
         }
@@ -122,7 +159,11 @@ class Api {
             const response = await this.api.post(`/weights/${userId}`, { weight, date });
             return response.data;
         } catch (error) {
-            console.error('Ошибка получения пользователя:', error);
+            notifications.show({
+                title: 'Error',
+                message: 'Ошибка добавления веса!',
+            });
+            console.error('Ошибка добавления веса:', error);
             throw error;
         }
     }

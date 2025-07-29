@@ -3,7 +3,6 @@ import {
   HttpStatus,
   Injectable,
   UnauthorizedException,
-  ConflictException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from '../prisma/prisma.service';
@@ -12,7 +11,6 @@ import { LoginDto } from '../dto/login.dto';
 import { compare } from 'bcrypt';
 import { UsersService } from '../users/users.service';
 import { CreateUserDto } from '../users/dto/create-user.dto';
-import { LoginResponse } from './auth.types';
 
 interface Tokens {
   accessToken: string;
@@ -34,7 +32,7 @@ export class AuthService {
     private readonly usersService: UsersService,
   ) {}
 
-  async login(loginDto: LoginDto, res: Response): Promise<LoginResponse> {
+  async login(loginDto: LoginDto, res: Response): Promise<void> {
     const user = await this.prisma.user.findUnique({
       where: { email: loginDto.email },
     });
@@ -46,8 +44,7 @@ export class AuthService {
     const tokens = await this.getTokens(user.id, user.email);
 
     this.setRefreshTokenCookie(res, tokens.refreshToken);
-
-    return {
+    res.status(HttpStatus.OK).json({
       message: 'Успешный вход',
       token: tokens.accessToken,
       user: {
@@ -57,34 +54,30 @@ export class AuthService {
         height: user.height,
         gender: user.gender,
       },
-    };
+    });
   }
 
   async register(createUserDto: CreateUserDto, res: Response): Promise<void> {
-    try {
-      const user = await this.usersService.registerUser(createUserDto);
-      const tokens = await this.getTokens(user.id, user.email);
+    const user = await this.usersService.registerUser(createUserDto);
 
-      this.setRefreshTokenCookie(res, tokens.refreshToken);
-
-      res.status(HttpStatus.CREATED).json({
-        message: 'Пользователь зарегистрирован',
-        token: tokens.accessToken,
-        user: {
-          id: user.id,
-          email: user.email,
-          birthdayDate: user.birthdayDate,
-          height: user.height,
-        },
-      });
-    } catch (error) {
-      if (error) {
-        throw new ConflictException(
-          'Пользователь с таким email уже существует',
-        );
-      }
-      throw error;
+    if (!user) {
+      throw new ForbiddenException('Пользователь с таким email уже существует');
     }
+
+    const tokens = await this.getTokens(user.id, user.email);
+
+    this.setRefreshTokenCookie(res, tokens.refreshToken);
+
+    res.status(HttpStatus.CREATED).json({
+      message: 'Пользователь зарегистрирован',
+      token: tokens.accessToken,
+      user: {
+        id: user.id,
+        email: user.email,
+        birthdayDate: user.birthdayDate,
+        height: user.height,
+      },
+    });
   }
 
   async refreshToken(
@@ -99,7 +92,7 @@ export class AuthService {
     }
 
     try {
-      const payload = this.jwtService.verify<JwtPayload>(token, {
+      const payload = await this.jwtService.verifyAsync<JwtPayload>(token, {
         secret: process.env.JWT_REFRESH_SECRET,
       });
 
@@ -117,6 +110,7 @@ export class AuthService {
 
       return { accessToken: tokens.accessToken };
     } catch (e) {
+      console.log(e);
       this.clearRefreshTokenCookie(res);
       throw new UnauthorizedException('Invalid or expired refresh token');
     }
