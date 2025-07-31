@@ -32,7 +32,7 @@ const processQueue = (error: unknown, token: string | null = null) => {
 
 api.interceptors.request.use(
     (config: InternalAxiosRequestConfig) => {
-        const token = useAuthStore.getState().accessToken;
+        const token = useAuthStore.getState().accessToken || localStorage.getItem('access_token');
         if (token && config.headers) {
             config.headers['Authorization'] = `Bearer ${token}`;
         }
@@ -46,6 +46,7 @@ api.interceptors.response.use(
     (response) => response,
     async (error: AxiosError) => {
         const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean };
+        console.log("error token", error);
 
         const isAccessExpired =
             error.response?.status === 401 &&
@@ -71,9 +72,8 @@ api.interceptors.response.use(
         isRefreshing = true;
 
         try {
-    
+            console.log('refresh');
             const res = await api.post('/auth/refresh', {}, { withCredentials: true });
-
             const newAccessToken = res.data.accessToken;
             if (!newAccessToken) throw new Error('Access token not returned');
 

@@ -1,6 +1,7 @@
 'use client';
 
 import {useSortedWeights} from "@/utils/hooks/useSortedWeights";
+import {useUserData} from "@/utils/hooks/useUserData";
 
 interface Props {
     children: React.ReactNode;
@@ -8,6 +9,8 @@ interface Props {
 
 export default function ProtectedLayout({ children }: Props) {
     useSortedWeights();
+    useUserData();
+    
     return (
         <>
             {children}

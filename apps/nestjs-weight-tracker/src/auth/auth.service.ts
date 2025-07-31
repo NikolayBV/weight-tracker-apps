@@ -61,7 +61,8 @@ export class AuthService {
     const user = await this.usersService.registerUser(createUserDto);
 
     if (!user) {
-      throw new ForbiddenException('Пользователь с таким email уже существует');
+      this.clearRefreshTokenCookie(res);
+      throw new UnauthorizedException('Refresh token not provided');
     }
 
     const tokens = await this.getTokens(user.id, user.email);
@@ -84,13 +85,15 @@ export class AuthService {
     req: Request,
     res: Response,
   ): Promise<{ accessToken: string }> {
+    console.log('start');
+    console.log(req.cookies);
     const token = req.cookies?.refresh_token as string;
 
     if (!token) {
       this.clearRefreshTokenCookie(res);
       throw new UnauthorizedException('Refresh token not provided');
     }
-
+    console.log(token, 'api/refresh');
     try {
       const payload = await this.jwtService.verifyAsync<JwtPayload>(token, {
         secret: process.env.JWT_REFRESH_SECRET,
@@ -139,13 +142,13 @@ export class AuthService {
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
       maxAge: 7 * 24 * 60 * 60 * 1000,
-      path: '/auth/refresh',
+      path: '/api/auth/refresh',
     });
   }
 
   private clearRefreshTokenCookie(res: Response): void {
     res.clearCookie('refresh_token', {
-      path: '/auth/refresh',
+      path: '/api/auth/refresh',
     });
   }
 }

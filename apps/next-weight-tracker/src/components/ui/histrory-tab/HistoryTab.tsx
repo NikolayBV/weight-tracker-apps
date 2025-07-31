@@ -1,6 +1,6 @@
 "use client";
-import { ScrollArea, Table, Text, Box } from "@mantine/core";
-import { IconArrowsUpDown } from "@tabler/icons-react";
+import {ScrollArea, Table, Text, Box, ActionIcon} from "@mantine/core";
+import { IconArrowsUpDown, IconAntennaBars1  } from "@tabler/icons-react";
 import styles from "./history-tab.module.css";
 import {Weight} from "@/utils/interfaces";
 import React from "react";
@@ -22,6 +22,9 @@ function HistoryTab({weights, sortBy, sortOrder, handleSort}: HistoryTabProps) {
         <Table.Tr key={el.id}>
             <Table.Td>{el.weight}</Table.Td>
             <Table.Td>{new Date(el.date).toLocaleDateString("ru-RU")}</Table.Td>
+            <Table.Td>
+                <ActionIcon size="xl" loaderProps={{ type: 'dots' }} />
+            </Table.Td>
         </Table.Tr>
     ));
 
@@ -46,6 +49,11 @@ function HistoryTab({weights, sortBy, sortOrder, handleSort}: HistoryTabProps) {
                                 <Table.Th>
                                     <Box onClick={() => handleSort("date")} style={{ display: "inline-flex", gap: 4, cursor: "pointer", alignItems: "center" }}>
                                         Дата {renderIcon("date")}
+                                    </Box>
+                                </Table.Th>
+                                <Table.Th>
+                                    <Box>
+                                        Действия
                                     </Box>
                                 </Table.Th>
                             </Table.Tr>

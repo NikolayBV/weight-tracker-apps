@@ -132,10 +132,9 @@ class Api {
             return response.data;
         } catch (error) {
             notifications.show({
-                title: 'Error',
-                message: 'Неизвестная ошибка!',
+                title: '',
+                message: 'Войдите в Ваш профиль!',
             });
-            console.error('Ошибка получения рефреш токена:', error);
             throw error;
         }
     }
@@ -180,6 +179,10 @@ class Api {
             console.error('Ошибка получения веса пользователя:', error);
             throw error;
         }
+    }
+    
+    setToken(token: string) {
+        this.api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     }
 }
 

@@ -12,25 +12,25 @@ interface Props {
 }
 
 export default function MainLayout({ children }: Props) {
-    const { auth, loading } = useAuth();
+    const { isAuthenticated, isLoading } = useAuth();
     const router = useRouter();
 
     useEffect(() => {
-        if (!loading) {
-            if (auth) {
+        if (!isLoading) {
+            if (isAuthenticated) {
                 router.replace('/dashboard/main');
             } else {
                 router.replace('/public/login');
             }
         }
-    }, [auth, loading, router]);
+    }, [isAuthenticated, isLoading, router]);
     
-    if (loading) return <Loader />;
+    if (isLoading) return <Loader />;
     
     return (
         <main>
-            {auth && <ProtectedLayout>{children}</ProtectedLayout>}
-            {!auth && <PublicLayout>{children}</PublicLayout>}
+            {isAuthenticated && <ProtectedLayout>{children}</ProtectedLayout>}
+            {!isAuthenticated && <PublicLayout>{children}</PublicLayout>}
         </main>
     );
 }

@@ -11,7 +11,7 @@ import {
 import { Response } from 'express';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { AuthGuard } from '../auth/auth.guard';
+import { AuthGuard } from '../auth/guards/auth.guard';
 
 @Controller('users')
 export class UsersController {
@@ -27,7 +27,6 @@ export class UsersController {
   @Get(':id')
   async findOne(@Res() res: Response, @Param('id') id: string) {
     const user = await this.usersService.findOne(id);
-
     if (!user) {
       res.status(204).json({ message: "User doesn't exist" });
     }

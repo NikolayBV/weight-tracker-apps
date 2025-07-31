@@ -8,6 +8,13 @@ export interface RegisterData {
     gender: Gender | "";
 }
 
+export interface AuthState {
+    isAuthenticated: boolean;
+    isLoading: boolean;
+    user: null | User;
+    error: null | string;
+}
+
 export interface UpdateUserData extends RegisterData {
     id: string;
 }
