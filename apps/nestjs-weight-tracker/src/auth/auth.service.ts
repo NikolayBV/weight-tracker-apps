@@ -85,15 +85,12 @@ export class AuthService {
     req: Request,
     res: Response,
   ): Promise<{ accessToken: string }> {
-    console.log('start');
-    console.log(req.cookies);
     const token = req.cookies?.refresh_token as string;
 
     if (!token) {
       this.clearRefreshTokenCookie(res);
       throw new UnauthorizedException('Refresh token not provided');
     }
-    console.log(token, 'api/refresh');
     try {
       const payload = await this.jwtService.verifyAsync<JwtPayload>(token, {
         secret: process.env.JWT_REFRESH_SECRET,

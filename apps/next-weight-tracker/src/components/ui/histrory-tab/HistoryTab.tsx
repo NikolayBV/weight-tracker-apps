@@ -1,32 +1,17 @@
 "use client";
 import {ScrollArea, Table, Text, Box, ActionIcon} from "@mantine/core";
-import { IconArrowsUpDown, IconAntennaBars1  } from "@tabler/icons-react";
+import { IconArrowsUpDown, IconDots  } from "@tabler/icons-react";
 import styles from "./history-tab.module.css";
 import {Weight} from "@/utils/interfaces";
 import React from "react";
 
 interface HistoryTabProps {
-    weights: Weight[];
-    sortBy: "weight" | "date";
-    sortOrder: "asc" | "desc";
     handleSort: (key: "weight" | "date") => void;
+    renderIcon: (key: "weight" | "date") => React.ReactNode;
+    rows: React.ReactNode[];
 }
 
-function HistoryTab({weights, sortBy, sortOrder, handleSort}: HistoryTabProps) {
-    const renderIcon = (key: "weight" | "date") => {
-        if (sortBy !== key) return <IconArrowsUpDown size="0.9rem" stroke={1.5} />;
-        return sortOrder === "asc" ? <span>▲</span> : <span>▼</span>;
-    };
-
-    const rows = weights.map((el) => (
-        <Table.Tr key={el.id}>
-            <Table.Td>{el.weight}</Table.Td>
-            <Table.Td>{new Date(el.date).toLocaleDateString("ru-RU")}</Table.Td>
-            <Table.Td>
-                <ActionIcon size="xl" loaderProps={{ type: 'dots' }} />
-            </Table.Td>
-        </Table.Tr>
-    ));
+function HistoryTab({handleSort, renderIcon, rows}: HistoryTabProps) {
 
     return (
         <div className={styles.tab}>
@@ -34,7 +19,7 @@ function HistoryTab({weights, sortBy, sortOrder, handleSort}: HistoryTabProps) {
                 История веса
             </Text>
 
-            {weights.length === 0 ? (
+            {rows.length === 0 ? (
                 <p>Нет данных</p>
             ) : (
                 <ScrollArea h={250}>
