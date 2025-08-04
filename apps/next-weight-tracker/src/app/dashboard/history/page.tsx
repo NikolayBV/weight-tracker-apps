@@ -4,8 +4,9 @@ import {useWeightStore} from "@/stores/weightStore";
 import {useSortedWeights} from "@/utils/hooks/useSortedWeights";
 import HistoryTab from "@/components/ui/histrory-tab/HistoryTab";
 import React, {useCallback, useMemo} from "react";
-import {IconArrowsUpDown, IconDots} from "@tabler/icons-react";
-import {ActionIcon, Table} from "@mantine/core";
+import {IconArrowsUpDown} from "@tabler/icons-react";
+import {Table} from "@mantine/core";
+import MenuButton from "@/components/ui/menu-button/MenuButton";
 
 export default function HistoryPage() {
     const weights = useWeightStore((state) => state.userWeight);
@@ -17,9 +18,7 @@ export default function HistoryPage() {
                 <Table.Td>{el.weight}</Table.Td>
                 <Table.Td>{new Date(el.date).toLocaleDateString("ru-RU")}</Table.Td>
                 <Table.Td>
-                    <ActionIcon variant="outline">
-                        <IconDots size={18} stroke={1.5} />
-                    </ActionIcon>
+                    <MenuButton weight={el} />
                 </Table.Td>
             </Table.Tr>
         ))

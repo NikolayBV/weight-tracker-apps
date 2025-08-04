@@ -47,7 +47,7 @@ export default function DashboardTab() {
     return (
         <div className={styles.tab}>
             <Modal opened={opened} onClose={close} centered>
-                <Form title="Добавление веса" onSubmit={(e) => handleSubmit(e)}>
+                <Form title="Добавление веса" onSubmit={handleSubmit}>
                     <MyInput inputTitle={"Вес"} value={weight} type={"number"}
                              onChange={(e) => setWeight(e.target.value)}></MyInput>
                     <MyInput inputTitle={"Дата"} value={date} type={"date"}

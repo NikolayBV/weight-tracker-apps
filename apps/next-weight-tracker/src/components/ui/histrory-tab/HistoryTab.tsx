@@ -1,8 +1,6 @@
 "use client";
-import {ScrollArea, Table, Text, Box, ActionIcon} from "@mantine/core";
-import { IconArrowsUpDown, IconDots  } from "@tabler/icons-react";
+import {ScrollArea, Table, Text, Box} from "@mantine/core";
 import styles from "./history-tab.module.css";
-import {Weight} from "@/utils/interfaces";
 import React from "react";
 
 interface HistoryTabProps {
@@ -11,7 +9,7 @@ interface HistoryTabProps {
     rows: React.ReactNode[];
 }
 
-function HistoryTab({handleSort, renderIcon, rows}: HistoryTabProps) {
+function HistoryTab({handleSort, renderIcon, rows }: HistoryTabProps) {
 
     return (
         <div className={styles.tab}>
