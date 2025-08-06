@@ -1,10 +1,11 @@
-import React, {useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {ActionIcon, Button, Menu, Modal} from "@mantine/core";
 import {IconDots} from "@tabler/icons-react";
 import Form from "@/components/forms/form/Form";
 import MyInput from "@/components/ui/input/MyInput";
 import {useDisclosure} from "@mantine/hooks";
 import {Weight} from "@/utils/interfaces";
+import WeightModal from "../weight-modal/WeightModal";
 
 interface MenuButtonProps {
     weight: Weight;
@@ -12,18 +13,14 @@ interface MenuButtonProps {
 
 const MenuButton = ({ weight }: MenuButtonProps) => {
     const [opened, setOpened] = useState(false);
-    const [userWeight, setUserWeight] = useState(weight.weight);
-    const [date, setDate] = useState(weight.date);
     const [openedModal, { open, close }] = useDisclosure(false);
-
-    console.log(weight);
     
     const handleEdit = () => {
         setOpened(!opened);
     };
 
-    const handleEditWeight = () => {
-        console.log('Edit weight');
+    const handleEditWeight = (weight: string) => {
+        console.log('Weight', weight);
     };
     
     const handleDelete = () => {
@@ -32,15 +29,13 @@ const MenuButton = ({ weight }: MenuButtonProps) => {
     
     return (
         <Menu opened={opened} onChange={handleEdit}>
-            <Modal opened={openedModal} onClose={close} centered>
-                <Form title="Изменить вес" onSubmit={handleEditWeight}>
-                    <MyInput inputTitle={"Вес"} value={userWeight} type={"number"}
-                             onChange={(e) => setUserWeight(e.target.value)}></MyInput>
-                    <MyInput inputTitle={"Дата"} value={new Date(date).toISOString().split('T')[0]} type={"date"}
-                             onChange={(e) => setDate(e.target.value)}></MyInput>
-                    <Button type={'submit'}>Изменить</Button>
-                </Form>
-            </Modal>
+            <WeightModal
+                title="Изменить вес"
+                buttonText="Изменить"
+                weight={weight} 
+                openedModal={openedModal} 
+                close={close}
+                handleEditWeight={handleEditWeight}/>
             <Menu.Target>
                 <ActionIcon variant="outline">
                     <IconDots size={18} stroke={1.5} />
