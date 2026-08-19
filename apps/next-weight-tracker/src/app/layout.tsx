@@ -7,6 +7,7 @@ import {Notifications} from "@mantine/notifications";
 import Header from "@/components/ui/header/Header";
 import Footer from "@/components/ui/footer/Footer";
 import MainLayout from "@/components/layouts/main-layout/MainLayout";
+import Providers from "./providers";
 
 export default function RootLayout({
   children,
@@ -16,6 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en">
     <body>
+    <Providers>
     <MantineProvider
         defaultColorScheme="auto"
         theme={{
@@ -32,6 +34,7 @@ export default function RootLayout({
 
       <Footer />
     </MantineProvider>
+    </Providers>
     </body>
     </html>
   );

@@ -1,29 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { apiInstance } from '@/api/api';
 import { useUserStore } from '@/stores/userStore';
 import { useWeightStore } from '@/stores/weightStore';
+import {useEffect, useState} from "react";
 
 export const useSortedWeights = () => {
     const [sortBy, setSortBy] = useState<'date' | 'weight'>('date');
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
     const userId = useUserStore((state) => state.id);
     const setUserWeight = useWeightStore((state) => state.setUserWeight);
-
-    const fetchWeights = async () => {
-        try {
-            if (!userId || !sortBy || !sortOrder) return;
-            const response = await apiInstance.getWeight({ userId, sortBy, sortOrder });
-            if (response?.entries) {
-                setUserWeight(response.entries);
-            }
-        } catch (e) {
-            console.error('Ошибка загрузки весов:', e);
-        }
-    }
-
-    useEffect(() => {
-        fetchWeights();
-    }, [userId, sortBy, sortOrder]);
 
     const handleSort = (key: 'date' | 'weight') => {
         if (sortBy === key) {
@@ -33,10 +18,29 @@ export const useSortedWeights = () => {
             setSortOrder('asc');
         }
     };
+    
+    const { data, isLoading, error } = useQuery({
+        queryKey: ['weights', userId, sortBy, sortOrder],
+        queryFn: async () => {
+            if (!userId) return;
+            const response = await apiInstance.getWeight({ userId, sortBy, sortOrder });
+            return response?.entries || [];
+        },
+        enabled: !!userId,
+    });
+    
+    useEffect(() => {
+        if (data) {
+            setUserWeight(data);
+        }
+    }, [data]);
 
     return {
         sortBy,
         sortOrder,
         handleSort,
+        weights: data,
+        isLoading,
+        error,
     };
 };

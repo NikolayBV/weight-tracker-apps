@@ -30,7 +30,7 @@ export class AuthController {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
-      path: '/auth/refresh',
+      path: '/api/auth/refresh',
     });
 
     return { message: 'Успешный выход' };
